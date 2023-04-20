@@ -1,15 +1,12 @@
-# The name of Project
+# Greetings traveller
 
-Movix django admin
+Мы рады, что вы приступили к выполнению 1 задания из курса Middle Python-разработчик.
+ 
+Описание структуры и порядок выполнения проекта:
+1. `schema_design` - раздел c материалами для архитектуры базы данных.
+2. `movies_admin` - раздел с материалами для панели администратора.
+3. `sqlite_to_postgres` - раздел с материалами по миграции данных.
 
-## What is this?
+Напоминаем, что все три части работы нужно сдавать на ревью одновременно.
 
-## Why is it good?
-
-## What is under the hood?
-
-## The Use Cases
-
-## How to install
-
-## Disclaimer
+Успехов!
