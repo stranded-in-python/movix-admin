@@ -26,7 +26,7 @@ class TimeStampedMixin(models.Model):
 
 class Genre(UUIDMixin, TimeStampedMixin):
     name = models.CharField(_("name"), max_length=255)
-    description = models.TextField(_("description"), blank=True)
+    description = models.TextField(_("description"), blank=True, null=True)
 
     def __str__(self):
         return str(self.name)
@@ -51,7 +51,7 @@ class Person(UUIDMixin, TimeStampedMixin):
 
 class FilmWork(UUIDMixin, TimeStampedMixin):
     title = models.CharField(_("Title"), max_length=255)
-    description = models.TextField(_("Description"), blank=True)
+    description = models.TextField(_("Description"), blank=True, null=True)
     creation_date = models.DateField(_("Creation date"))
     rating = models.FloatField(
         _("Film rating"), validators=[MinValueValidator(0), MaxValueValidator(100)]

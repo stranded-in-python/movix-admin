@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ("title", models.CharField(max_length=255, verbose_name="Title")),
                 (
                     "description",
-                    models.TextField(blank=True, verbose_name="Description"),
+                    models.TextField(blank=True, null=True, verbose_name="Description"),
                 ),
                 ("creation_date", models.DateField(verbose_name="Creation date")),
                 (
@@ -79,7 +79,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=255, verbose_name="name")),
                 (
                     "description",
-                    models.TextField(blank=True, verbose_name="description"),
+                    models.TextField(blank=True, null=True, verbose_name="description"),
                 ),
             ],
             options={
