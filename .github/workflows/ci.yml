@@ -38,10 +38,10 @@ jobs:
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
 
-  builder-admin-stable:
+  builder-stable:
     environment: production
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request' }}
+#    if: ${{ github.event_name != 'pull_request' }}
     needs:
       - linter
     steps:
