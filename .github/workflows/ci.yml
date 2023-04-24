@@ -38,35 +38,7 @@ jobs:
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
 
-  builder-admin-local:
-    runs-on: ubuntu-latest
-    if: ${{ github.action != 'pull_request' }}
-    needs:
-      - linter
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Login to GHCR
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.TOKEN }}
-
-      - name: Build Docker image
-        uses: docker/build-push-action@v2
-        with:
-          file: "./compose/local/django/Dockerfile"
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            ghcr.io/stranded-in-python/movix-admin:dev
-          labels: |
-            maintainer=${{ github.actor }}
-            build-date=${{ github.event.head_commit.timestamp }}
-
-  builder-admin-unstable:
+  builder-admin-stable:
     environment: production
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
@@ -84,42 +56,24 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.TOKEN }}
 
-      - name: Build Docker image
+      - name: Build Admin Docker image
         uses: docker/build-push-action@v2
         with:
           file: "./compose/production/django/Dockerfile"
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/stranded-in-python/movix-admin:unstable
+            ghcr.io/stranded-in-python/movix-admin:stable
           labels: |
             maintainer=${{ github.actor }}
             build-date=${{ github.event.head_commit.timestamp }}
 
-  builder-s2p-unstable:
-    environment: production
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request' }}
-    needs:
-      - linter
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Login to GHCR
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.TOKEN }}
-
-      - name: Build Docker image
+      - name: Build S2P Docker image
         uses: docker/build-push-action@v2
         with:
           file: "./compose/production/sqlite_to_postgres/Dockerfile"
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/stranded-in-python/movix-s2p:unstable
+            ghcr.io/stranded-in-python/movix-s2p:stable
           labels: |
             maintainer=${{ github.actor }}
             build-date=${{ github.event.head_commit.timestamp }}
