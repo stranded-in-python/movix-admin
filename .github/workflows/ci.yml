@@ -41,7 +41,7 @@ jobs:
   builder-stable:
     environment: production
     runs-on: ubuntu-latest
-#    if: ${{ github.event_name != 'pull_request' }}
+    if: ${{ github.event_name != 'pull_request' }}
     needs:
       - linter
     steps:
