@@ -46,7 +46,7 @@ jobs:
       - linter
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Login to GHCR
         if: github.event_name != 'pull_request'
@@ -57,7 +57,7 @@ jobs:
           password: ${{ secrets.TOKEN }}
 
       - name: Build movix-admin:latest Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           file: "./compose/production/django/Dockerfile"
           push: ${{ github.event_name != 'pull_request' }}
@@ -68,7 +68,7 @@ jobs:
             build-date=${{ github.event.head_commit.timestamp }}
 
       - name: Build movix-admin:dev Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           file: "./compose/local/django/Dockerfile"
           push: ${{ github.event_name != 'pull_request' }}
@@ -79,7 +79,7 @@ jobs:
             build-date=${{ github.event.head_commit.timestamp }}
 
       - name: Build movix-s2p:latest Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           file: "./compose/production/sqlite_to_postgres/Dockerfile"
           push: ${{ github.event_name != 'pull_request' }}
