@@ -38,7 +38,7 @@ jobs:
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
 
-  builder-unstable:
+  builder:
     environment: production
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
@@ -56,13 +56,13 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.TOKEN }}
 
-      - name: Build movix-admin:unstable Docker image
+      - name: Build movix-admin:latest Docker image
         uses: docker/build-push-action@v2
         with:
           file: "./compose/production/django/Dockerfile"
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/stranded-in-python/movix-admin:unstable
+            ghcr.io/stranded-in-python/movix-admin:latest
           labels: |
             maintainer=${{ github.actor }}
             build-date=${{ github.event.head_commit.timestamp }}
@@ -78,13 +78,13 @@ jobs:
             maintainer=${{ github.actor }}
             build-date=${{ github.event.head_commit.timestamp }}
 
-      - name: Build movix-s2p:unstable Docker image
+      - name: Build movix-s2p:latest Docker image
         uses: docker/build-push-action@v2
         with:
           file: "./compose/production/sqlite_to_postgres/Dockerfile"
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/stranded-in-python/movix-s2p:unstable
+            ghcr.io/stranded-in-python/movix-s2p:latest
           labels: |
             maintainer=${{ github.actor }}
             build-date=${{ github.event.head_commit.timestamp }}
