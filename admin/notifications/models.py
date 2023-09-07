@@ -75,10 +75,20 @@ class User(models.Model):
 class UserGroup(TimestampedModel):
     name = models.CharField(max_length=255)
 
+    class Meta:
+        db_table = 'notifications"."user_group'
+        verbose_name = _("UserGroup")
+        verbose_name_plural = _("UserGroups")
+
 
 class UserGroupMembership(TimestampedModel):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     group = models.ForeignKey(UserGroup, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'notifications"."user_group_membership'
+        verbose_name = _("UserGroupMembership")
+        verbose_name_plural = _("UserGroupMemberships")
 
 
 class UserSettings(TimestampedModel):
