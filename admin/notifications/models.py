@@ -66,14 +66,6 @@ class EventNotification(TimestampedModel):
 
 class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    username = models.CharField(max_length=20)
-    email = models.EmailField()
-    hashed_password = models.CharField(max_length=1024)
-    is_active = models.BooleanField(default=True, null=False)  # type: ignore
-    is_superuser = models.BooleanField(default=False, null=False)  # type: ignore
-    is_admin = models.BooleanField(default=False, null=False)  # type: ignore
-    first_name = models.CharField(max_length=32, null=True)  # type: ignore
-    last_name = models.CharField(max_length=32, null=True)  # type: ignore
 
     class Meta:
         managed = False
@@ -90,7 +82,7 @@ class UserGroupMembership(TimestampedModel):
 
 
 class UserSettings(TimestampedModel):
-    user = models.UUIDField(unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     default = models.CharField(
         max_length=255, choices=enums.NotificationChannels.choices
     )
