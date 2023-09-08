@@ -10,6 +10,10 @@ class ContextInline(admin.TabularInline):
     model = models.Context
 
 
+class UserGroupMembershipInline(admin.TabularInline):
+    model = models.UserGroupMembership
+
+
 @admin.register(models.Notification)
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ("title", "description", "template", "channels")
@@ -23,8 +27,17 @@ class EventNotificationAdmin(admin.ModelAdmin):
 
 @admin.register(models.Template)
 class TemplateAdmin(admin.ModelAdmin):
-    list_display = ("name", "mime_type", "body")
+    list_display = ("name", "mime_type", "body_editable")
     search_fields = ("name", "mime_type", "id")
+    exclude = ("body",)
+
+
+@admin.register(models.UserGroup)
+class UserGroupAdmin(admin.ModelAdmin):
+    inlines = (UserGroupMembershipInline,)
+
+    list_dispaly = ("name",)
+    search_fields = ("name",)
 
 
 @admin.register(models.Context)
