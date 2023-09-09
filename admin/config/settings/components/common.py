@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "ckeditor",
+    "cronfield",
     "movies.apps.MoviesConfig",
     "notifications.apps.NotificationsConfig",
 ]

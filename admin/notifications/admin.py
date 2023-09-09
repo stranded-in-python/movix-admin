@@ -27,7 +27,7 @@ class EventNotificationAdmin(admin.ModelAdmin):
 
 @admin.register(models.Template)
 class TemplateAdmin(admin.ModelAdmin):
-    list_display = ("name", "mime_type", "body_editable")
+    list_display = ("name", "mime_type")
     search_fields = ("name", "mime_type", "id")
     exclude = ("body",)
 
@@ -42,10 +42,12 @@ class UserGroupAdmin(admin.ModelAdmin):
 
 @admin.register(models.Context)
 class ContextAdmin(admin.ModelAdmin):
-    list_display = ("name", "context_vars")
+    fields = ("name", "context_vars_editable")
+    list_display = ("name",)
 
 
 @admin.register(models.NotificationCron)
 class NotificationCronAdmin(admin.ModelAdmin):
     list_display = ("notification", "cron_str", "status")
     search_fields = ("notification", "status")
+    exclude = ("status",)

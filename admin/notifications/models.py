@@ -1,11 +1,12 @@
-import io
 import uuid
 
 from ckeditor.fields import RichTextField
+from cronfield.models import CronField
 from django.core.files.base import ContentFile
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
+
 from notifications import enums, utils
 
 
@@ -25,8 +26,9 @@ class TimestampedModel(BaseModel):
 
 
 class Context(TimestampedModel):
-    name = models.CharField(max_length=255)
+    name = models.CharField(_("Name"), max_length=255)
     context_vars = models.JSONField()
+    context_vars_editable = models.TextField(_("Context vars"), null=True)
 
     class Meta:
         db_table = 'notifications"."context'
@@ -35,6 +37,11 @@ class Context(TimestampedModel):
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def save(self, *args, **kwargs):
+        self.context_vars_editable = self.context_vars_editable or ""
+        self.context_vars = {"vars": str(self.context_vars_editable).split("\n")}
+        super().save(*args, **kwargs)
 
 
 class Template(TimestampedModel):
@@ -57,9 +64,11 @@ class Template(TimestampedModel):
     def save(self, *args, **kwargs):
         # store body_editable in body
         if self.body_editable:  # check if body_editable is not empty
-            content = self.body_editable.encode('utf-8')  # encode the content
+            content = self.body_editable.encode("utf-8")  # encode the content
             file_name = (
-                slugify(self.name) + "." + utils.get_mime_type(self.mime_type)
+                slugify(self.name)
+                + "."
+                + utils.get_file_extension_by_mime_type(str(self.mime_type))
             )  # create a file name from the name field
             self.body = ContentFile(
                 content, name=file_name
@@ -155,7 +164,7 @@ class NotificationSettings(TimestampedModel):
 
 class NotificationCron(TimestampedModel):
     notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
-    cron_str = models.CharField(max_length=6)
+    cron_str = CronField(_("Cron"))
     status = models.CharField(
         max_length=255, choices=enums.Status.choices, default=enums.Status.PENDING
     )
