@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 
-from notifications import models
+from notifications import forms, models
 
 
 class UserGroupMembershipInline(admin.TabularInline):
@@ -23,7 +23,7 @@ class EventNotificationAdmin(admin.ModelAdmin):
 class TemplateAdmin(admin.ModelAdmin):
     list_display = ("name", "mime_type")
     search_fields = ("name", "mime_type", "id")
-    exclude = ("body",)
+    form = forms.TemplateAdminForm
 
 
 @admin.register(models.UserGroup)
