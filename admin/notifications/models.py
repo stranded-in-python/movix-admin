@@ -6,6 +6,7 @@ from django.core.files.base import ContentFile
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
+from django_jsonform.models.fields import JSONField
 
 from notifications import enums, utils
 
@@ -26,9 +27,24 @@ class TimestampedModel(BaseModel):
 
 
 class Context(TimestampedModel):
+    CONTEXT_VARS_SCHEMA = {
+        "type": "dict",
+        "properties": {
+            "vars": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "choices": [
+                        {"title": title, "value": value}
+                        for title, value in enums.ContextVariables.choices
+                    ],
+                    "widget": "multiselect",
+                },
+            },
+        },
+    }
     name = models.CharField(_("Name"), max_length=255)
-    context_vars = models.JSONField()
-    context_vars_editable = models.TextField(_("Context vars"), null=True)
+    context_vars = JSONField(schema=CONTEXT_VARS_SCHEMA)
 
     class Meta:
         db_table = 'notifications"."context'
@@ -38,17 +54,13 @@ class Context(TimestampedModel):
     def __str__(self) -> str:
         return str(self.name)
 
-    def save(self, *args, **kwargs):
-        self.context_vars_editable = self.context_vars_editable or ""
-        self.context_vars = {"vars": str(self.context_vars_editable).split("\n")}
-        super().save(*args, **kwargs)
-
 
 class Template(TimestampedModel):
     name = models.CharField(_("Template name"), max_length=255)
     mime_type = models.CharField(
         _("Template media type"), max_length=255, choices=enums.MimeType.choices
     )
+    # dirty hack to easily edit the body
     body_editable = RichTextField(_("Template body"), null=True)
     body = models.FileField(upload_to=utils.template_path)  # type: ignore
     context = models.ForeignKey(Context, on_delete=models.CASCADE)
@@ -64,7 +76,7 @@ class Template(TimestampedModel):
     def save(self, *args, **kwargs):
         # store body_editable in body
         if self.body_editable:  # check if body_editable is not empty
-            content = self.body_editable.encode("utf-8")  # encode the content
+            content = str(self.body_editable).encode("utf-8")  # encode the content
             file_name = (
                 slugify(self.name)
                 + "."
@@ -127,10 +139,21 @@ class UserSettings(TimestampedModel):
 
 
 class Notification(TimestampedModel):
+    CHANNELS_SCHEMA = {
+        "type": "array",
+        "items": {
+            "type": "string",
+            "choices": [
+                {"title": title, "value": value}
+                for title, value in enums.NotificationChannels.choices
+            ],
+            "widget": "multiselect",
+        },
+    }
     title = models.CharField(max_length=255)
     description = models.TextField()
     template = models.ForeignKey(Template, on_delete=models.CASCADE)
-    channels = models.JSONField()
+    channels = JSONField(schema=CHANNELS_SCHEMA)
     recipients = models.ForeignKey(UserGroup, on_delete=models.CASCADE, null=True)
 
     class Meta:
@@ -153,8 +176,9 @@ class EventNotification(TimestampedModel):
 
 
 class NotificationSettings(TimestampedModel):
+
     notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
-    email_disabled = models.JSONField()  # type: ignore
+    email_disabled = models.JSONField(_("No email for them"))
 
     class Meta:
         db_table = 'notifications"."notification_settings'

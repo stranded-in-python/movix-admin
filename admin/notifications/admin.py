@@ -1,13 +1,7 @@
+from django import forms
 from django.contrib import admin
+
 from notifications import models
-
-
-class TemplateInline(admin.TabularInline):
-    model = models.Template
-
-
-class ContextInline(admin.TabularInline):
-    model = models.Context
 
 
 class UserGroupMembershipInline(admin.TabularInline):
@@ -42,7 +36,7 @@ class UserGroupAdmin(admin.ModelAdmin):
 
 @admin.register(models.Context)
 class ContextAdmin(admin.ModelAdmin):
-    fields = ("name", "context_vars_editable")
+    fields = ("name", "context_vars")
     list_display = ("name",)
 
 

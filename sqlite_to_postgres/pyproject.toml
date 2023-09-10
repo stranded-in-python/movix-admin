@@ -4,7 +4,7 @@ skip-string-normalization = true
 skip-magic-trailing-comma = true
 
 [tool.pyright]
-venv = 'venv'
+venv = '.venv'
 venvPath = '.'
 
 [tool.djlint]

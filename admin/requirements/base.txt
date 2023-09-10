@@ -8,3 +8,4 @@ django==3.2
 django-split-settings==1.2.0
 django-ckeditor==6.7.0
 django-cronfield==0.2
+django-jsonform==2.19.1
