@@ -13,3 +13,7 @@ class PersonRoles(models.TextChoices):
     ACTOR = "actor", _("Actor")
     DIRECTOR = "director", _("Director")
     WRITER = "writer", _("Writer")
+
+
+class NotificationChannels(models.TextChoices):
+    EMAIL = "email", _("Email")

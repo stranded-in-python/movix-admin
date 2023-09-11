@@ -22,6 +22,9 @@ urlpatterns = [
     path("api/", include("movies.api.urls")),
 ]
 
+if "ckeditor" in settings.INSTALLED_APPS:
+    urlpatterns += [path('ckeditor/', include('ckeditor_uploader.urls'))]
+
 if settings.DEBUG:
     if "debug_toolbar" in settings.INSTALLED_APPS:
         import debug_toolbar

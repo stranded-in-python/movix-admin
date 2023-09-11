@@ -77,14 +77,3 @@ jobs:
           labels: |
             maintainer=${{ github.actor }}
             build-date=${{ github.event.head_commit.timestamp }}
-
-      - name: Build movix-s2p:latest Docker image
-        uses: docker/build-push-action@v4
-        with:
-          file: "./compose/production/sqlite_to_postgres/Dockerfile"
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            ghcr.io/stranded-in-python/movix-s2p:latest
-          labels: |
-            maintainer=${{ github.actor }}
-            build-date=${{ github.event.head_commit.timestamp }}
