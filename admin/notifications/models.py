@@ -99,9 +99,16 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
             os.remove(instance.body.path)
 
 
+class ActiveUserManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_verified=True)
+
+
 class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(unique=True, max_length=20)
+    is_verified = models.BooleanField()
+    objects = ActiveUserManager()
 
     class Meta:
         managed = False
@@ -198,7 +205,9 @@ class NotificationSettings(TimestampedModel):
 
 
 class NotificationCron(TimestampedModel):
-    notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
+    # Instead of just deleting an entry,
+    # we mark it as enums.Status.STALE to be deleted later by scheduler
+    notification = models.ForeignKey(Notification, on_delete=models.DO_NOTHING)
     cron_str = CronField(_("Cron"))
     status = models.CharField(
         max_length=255, choices=enums.Status.choices, default=enums.Status.PENDING
@@ -211,3 +220,9 @@ class NotificationCron(TimestampedModel):
 
     def __str__(self) -> str:
         return str(self.notification)
+
+    # Instead of just deleting an entry,
+    # we mark it as enums.Status.STALE to be deleted later by scheduler
+    def delete(self, *args, **kwargs):
+        self.status = enums.Status.STALE
+        self.save()
