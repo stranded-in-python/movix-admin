@@ -2,7 +2,7 @@ import httpx
 from django.conf import settings
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from notifications import forms, models
+from notifications import enums, forms, models
 
 
 class UserGroupMembershipInline(admin.TabularInline):
@@ -12,9 +12,7 @@ class UserGroupMembershipInline(admin.TabularInline):
 @admin.action(description=_("Send notifications"))
 def send_notifications(modeladmin, request, queryset):  # type: ignore
     for notification in queryset:
-        httpx.post(
-            settings.NOTIFICATIONS_URL, json={"notification_id": notification.id}
-        )
+        httpx.post(f"{settings.NOTIFICATIONS_URL}/{str(notification.id)}")
 
 
 @admin.register(models.Notification)
@@ -50,8 +48,20 @@ class ContextAdmin(admin.ModelAdmin):
     list_display = ("name",)
 
 
+@admin.action(description=_("Mark as to be removed"))
+def mark_as_stale(modeladmin, request, queryset):  # type: ignore
+    for cron in queryset:
+        cron.status = enums.Status.STALE
+        cron.save()
+
+
 @admin.register(models.NotificationCron)
 class NotificationCronAdmin(admin.ModelAdmin):
     list_display = ("notification", "cron_str", "status")
     search_fields = ("notification", "status")
     exclude = ("status",)
+    actions = [mark_as_stale]
+
+    # Disabling simple delete to avoid CRON hoarding
+    def has_delete_permission(self, request, obj=None):
+        return False

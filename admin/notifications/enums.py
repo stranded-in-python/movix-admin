@@ -8,7 +8,7 @@ class MimeType(models.TextChoices):
 
 
 class Status(models.TextChoices):
-    IN_PROGRESS = "in_progress", _("In progress")
+    STALE = "stale", _("To be deleted")
     PENDING = "pending", _("Pending")
 
 

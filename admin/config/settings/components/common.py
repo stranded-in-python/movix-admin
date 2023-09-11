@@ -221,4 +221,4 @@ CKEDITOR_UPLOAD_PATH = "uploads/ckeditor/"
 # Notification Settings
 # ----------------------------------------------------------------------------
 NOTIFICATION_API_ENDPOINT = environ.get("NOTIFICATIONS_API_ENDPOINT")
-NOTIFICATIONS_URL = f"{NOTIFICATION_API_ENDPOINT}/message/"
+NOTIFICATIONS_URL = f"{NOTIFICATION_API_ENDPOINT}/notifications/"
