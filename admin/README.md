@@ -38,3 +38,7 @@ To set a recurring task, you'll need to create a new entry for `NotificationCron
 #### Manually launch a notification
 
 Just select a notificaion from the list and launch it by 'Send notifications' admin action.
+
+## Authors
+
+-   [Stranded in Python](https://github.com/stranded-in-python)
