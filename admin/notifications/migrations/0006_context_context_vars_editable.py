@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('notifications', '0005_auto_20230908_1319'),
-    ]
+    dependencies = [('notifications', '0005_auto_20230908_1319')]
 
     operations = [
         migrations.AddField(
             model_name='context',
             name='context_vars_editable',
             field=models.TextField(null=True),
-        ),
+        )
     ]

@@ -1,9 +1,7 @@
 import httpx
-from django import forms
 from django.conf import settings
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-
 from notifications import forms, models
 
 

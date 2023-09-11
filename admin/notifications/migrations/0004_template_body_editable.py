@@ -6,14 +6,12 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('notifications', '0003_rename_user_id_usergroupmembership_user'),
-    ]
+    dependencies = [('notifications', '0003_rename_user_id_usergroupmembership_user')]
 
     operations = [
         migrations.AddField(
             model_name='template',
             name='body_editable',
             field=ckeditor.fields.RichTextField(null=True),
-        ),
+        )
     ]

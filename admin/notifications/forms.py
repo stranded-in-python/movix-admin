@@ -3,7 +3,6 @@ from html import parser
 import nh3
 from django import forms
 from jinja2 import Environment
-
 from notifications import contexts, enums, models
 
 

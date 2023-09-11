@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('notifications', '0008_auto_20230910_1300'),
-    ]
+    dependencies = [('notifications', '0008_auto_20230910_1300')]
 
     operations = [
         migrations.AlterField(
             model_name='template',
             name='body_editable',
             field=models.TextField(null=True, verbose_name='Template body'),
-        ),
+        )
     ]

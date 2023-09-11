@@ -5,14 +5,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('notifications', '0002_auto_20230907_1249'),
-    ]
+    dependencies = [('notifications', '0002_auto_20230907_1249')]
 
     operations = [
         migrations.RenameField(
-            model_name='usergroupmembership',
-            old_name='user_id',
-            new_name='user',
-        ),
+            model_name='usergroupmembership', old_name='user_id', new_name='user'
+        )
     ]

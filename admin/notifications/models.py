@@ -1,14 +1,13 @@
+import os
 import uuid
 
-import nh3
-from ckeditor.fields import RichTextField
 from cronfield.models import CronField
+from django import dispatch
 from django.core.files.base import ContentFile
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.translation import gettext_lazy as _
 from django_jsonform.models.fields import JSONField
-
 from notifications import enums, utils
 
 
@@ -41,7 +40,7 @@ class Context(TimestampedModel):
                     ],
                     "widget": "multiselect",
                 },
-            },
+            }
         },
     }
     name = models.CharField(_("Name"), max_length=255)
@@ -87,6 +86,17 @@ class Template(TimestampedModel):
                 content, name=file_name
             )  # save the file to the body field
         super().save(*args, **kwargs)  # call the parent save method
+
+
+@dispatch.receiver(models.signals.post_delete, sender=Template)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """
+    Deletes file from filesystem
+    when corresponding `Document` object is deleted.
+    """
+    if instance.body:
+        if os.path.isfile(instance.body.path):
+            os.remove(instance.body.path)
 
 
 class User(models.Model):

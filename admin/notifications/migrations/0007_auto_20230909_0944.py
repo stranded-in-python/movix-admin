@@ -6,9 +6,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('notifications', '0006_context_context_vars_editable'),
-    ]
+    dependencies = [('notifications', '0006_context_context_vars_editable')]
 
     operations = [
         migrations.AlterField(
@@ -24,6 +22,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='notificationcron',
             name='cron_str',
-            field=cronfield.models.CronField(default='* * * * *', help_text='Minute Hour Day Month Weekday', max_length=100, verbose_name='Cron'),
+            field=cronfield.models.CronField(
+                default='* * * * *',
+                help_text='Minute Hour Day Month Weekday',
+                max_length=100,
+                verbose_name='Cron',
+            ),
         ),
     ]

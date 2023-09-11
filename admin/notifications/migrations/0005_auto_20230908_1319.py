@@ -7,25 +7,33 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('notifications', '0004_template_body_editable'),
-    ]
+    dependencies = [('notifications', '0004_template_body_editable')]
 
     operations = [
         migrations.AddField(
             model_name='notification',
             name='recipients',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='notifications.usergroup'),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='notifications.usergroup',
+            ),
         ),
         migrations.AlterField(
             model_name='template',
             name='body_editable',
-            field=ckeditor.fields.RichTextField(null=True, verbose_name='Template body'),
+            field=ckeditor.fields.RichTextField(
+                null=True, verbose_name='Template body'
+            ),
         ),
         migrations.AlterField(
             model_name='template',
             name='mime_type',
-            field=models.CharField(choices=[('text/html', 'Text Html'), ('text/plain', 'Text Plain')], max_length=255, verbose_name='Template media type'),
+            field=models.CharField(
+                choices=[('text/html', 'Text Html'), ('text/plain', 'Text Plain')],
+                max_length=255,
+                verbose_name='Template media type',
+            ),
         ),
         migrations.AlterField(
             model_name='template',
