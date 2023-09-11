@@ -1,5 +1,6 @@
 import uuid
 
+import nh3
 from ckeditor.fields import RichTextField
 from cronfield.models import CronField
 from django.core.files.base import ContentFile
@@ -61,7 +62,7 @@ class Template(TimestampedModel):
         _("Template media type"), max_length=255, choices=enums.MimeType.choices
     )
     # dirty hack to easily edit the body
-    body_editable = RichTextField(_("Template body"), null=True)
+    body_editable = models.TextField(_("Template body"), null=True)
     body = models.FileField(upload_to=utils.template_path)  # type: ignore
     context = models.ForeignKey(Context, on_delete=models.CASCADE)
 
@@ -76,7 +77,7 @@ class Template(TimestampedModel):
     def save(self, *args, **kwargs):
         # store body_editable in body
         if self.body_editable:  # check if body_editable is not empty
-            content = str(self.body_editable).encode("utf-8")  # encode the content
+            content = str(self.body_editable).encode("utf-8")
             file_name = (
                 slugify(self.name)
                 + "."

@@ -12,7 +12,7 @@ class TemplateAdminForm(forms.ModelForm):
         model = models.Template
         exclude = ("body",)
 
-    def clean_body_editable(self):
+    def clean_body_editable(self) -> str:
         template_str = str(self.cleaned_data["body_editable"])
         mime_type = self.cleaned_data["mime_type"]
         environment = Environment()
@@ -25,3 +25,4 @@ class TemplateAdminForm(forms.ModelForm):
                 parser.HTMLParser().feed(rendered_html)
         except Exception as e:
             raise forms.ValidationError(str(e))
+        return template_str

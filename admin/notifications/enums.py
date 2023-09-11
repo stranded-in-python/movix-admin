@@ -3,25 +3,25 @@ from django.utils.translation import gettext_lazy as _
 
 
 class MimeType(models.TextChoices):
-    TEXT_HTML = (_("HTML"), "text/html")
-    TEXT_PLAIN = (_("Text"), "text/plain")
+    TEXT_HTML = "text/html", _("HTML")
+    TEXT_PLAIN = "text/plain", _("Text")
 
 
 class Status(models.TextChoices):
-    IN_PROGRESS = (_("In progress"), "in_progress")
-    PENDING = (_("Pending"), "pending")
+    IN_PROGRESS = "in_progress", _("In progress")
+    PENDING = "pending", _("Pending")
 
 
 class Event(models.TextChoices):
-    REGISTERED = (_("Registered"), "registered")
+    REGISTERED = "registered", _("Registered")
 
 
 class NotificationChannels(models.TextChoices):
-    EMAIL = (_("Email"), "email")
+    EMAIL = "email", _("Email")
 
 
 class ContextVariables(models.TextChoices):
-    FIRST_NAME = (_("First name"), "first_name")
-    LAST_NAME = (_("Last name"), "last_name")
-    EMAIL = (_("Email"), "email")
-    USERNAME = (_("Username"), "username")
+    FIRST_NAME = "first_name", _("First name")
+    LAST_NAME = "last_name", _("Last name")
+    EMAIL = "email", _("Email")
+    USERNAME = "username", _("Username")
