@@ -28,19 +28,9 @@ class TimestampedModel(BaseModel):
 
 class Context(TimestampedModel):
     CONTEXT_VARS_SCHEMA = {
-        "type": "dict",
+        "type": "object",
         "properties": {
-            "vars": {
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "choices": [
-                        {"title": title, "value": value}
-                        for title, value in enums.ContextVariables.choices
-                    ],
-                    "widget": "multiselect",
-                },
-            }
+            key: {"type": "string"} for key, _ in enums.ContextVariables.choices
         },
     }
     name = models.CharField(_("Name"), max_length=255)
@@ -163,7 +153,7 @@ class Notification(TimestampedModel):
             "type": "string",
             "choices": [
                 {"title": title, "value": value}
-                for title, value in enums.NotificationChannels.choices
+                for value, title in enums.NotificationChannels.choices
             ],
             "widget": "multiselect",
         },
@@ -196,6 +186,7 @@ class EventNotification(TimestampedModel):
 class NotificationSettings(TimestampedModel):
 
     notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     email_disabled = models.JSONField(_("No email for them"))
 
     class Meta:
