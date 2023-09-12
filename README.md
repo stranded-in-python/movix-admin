@@ -13,9 +13,7 @@ Now there are components:
 
 1. Clone main repo of [movix](https://github.com/stranded-in-python/movix)
 
-2. Clone all services by running `clone_and_fetch`
-
-3. Run `make admin` to startup the service.
+3. Run `make init && make admin` to startup the service.
 
 ## Tell me more about...
 
