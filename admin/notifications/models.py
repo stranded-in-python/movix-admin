@@ -98,11 +98,13 @@ class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(unique=True, max_length=20)
     is_verified = models.BooleanField()
+    first_name = models.CharField(max_length=255, null=True)
+    last_name = models.CharField(max_length=255, null=True)
     objects = ActiveUserManager()
 
     class Meta:
         managed = False
-        db_table = 'users"."user'
+        db_table = 'notifications"."user'
 
     def __str__(self) -> str:
         return str(self.username)

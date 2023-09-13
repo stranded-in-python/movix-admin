@@ -1,3 +1,6 @@
+import logging
+
+import backoff
 import httpx
 from django.conf import settings
 from django.contrib import admin
@@ -9,10 +12,18 @@ class UserGroupMembershipInline(admin.TabularInline):
     model = models.UserGroupMembership
 
 
+@backoff.on_exception(backoff.expo, httpx.HTTPError, max_tries=5)
+def send_notification(notification_id: str):
+    httpx.post(f"{settings.NOTIFICATIONS_URL}/{notification_id}")
+
+
 @admin.action(description=_("Send notifications"))
 def send_notifications(modeladmin, request, queryset):  # type: ignore
     for notification in queryset:
-        httpx.post(f"{settings.NOTIFICATIONS_URL}/{str(notification.id)}")
+        try:
+            send_notification(str(notification.id))
+        except httpx.HTTPError:
+            logging.exception("Failed to send notification: %s", notification.id)
 
 
 @admin.register(models.Notification)
