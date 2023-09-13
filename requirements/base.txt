@@ -3,6 +3,7 @@ cron-validator==1.0.0
 Jinja2==3.1.2
 nh3==0.2.14
 httpx==0.24.1
+backoff==2.2.1
 
 # DJANGO
 django==3.2
