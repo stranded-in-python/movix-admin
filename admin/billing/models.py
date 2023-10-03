@@ -13,7 +13,7 @@ class BaseModel(models.Model):
 
 class TimestampedModel(BaseModel):
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
