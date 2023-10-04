@@ -2,26 +2,20 @@ from billing import models
 from django.contrib import admin
 
 
-class TariffInline(admin.TabularInline):
-    model = models.Tariff
-
-
-class AccountInline(admin.TabularInline):
-    model = models.Account
-
-
-class InvoiceInline(admin.TabularInline):
-    model = models.Invoice
+class AccountStatusInline(admin.TabularInline):
+    model = models.AccountStatus
+    fields = ["status"]
 
 
 class RefundInline(admin.TabularInline):
     model = models.Refund
 
 
-@admin.register(models.Subscription)
-class SubsAdmin(admin.ModelAdmin):
-    inlines = [TariffInline, AccountInline, InvoiceInline]
-    list_display = ("id", "name")
+@admin.register(models.Account)
+class AccountAdmin(admin.ModelAdmin):
+    inlines = [AccountStatusInline]
+    list_display = ["user_id", "subscription"]
+    search_fields = ["user_id", "subscription"]
 
 
 @admin.register(models.Invoice)
