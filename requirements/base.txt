@@ -1,4 +1,4 @@
-psycopg2==2.9.5
+# psycopg2==2.9.5
 cron-validator==1.0.0
 Jinja2==3.1.2
 nh3==0.2.14
