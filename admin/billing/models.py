@@ -56,9 +56,9 @@ class Refund(FinancialMixin):
 
 class AcquiringLog(BaseModel):
     transaction_id = models.TextField(_("transaction_id"), null=True)
-    invoice_id = models.UUIDField(_("invoice_id"), default=uuid.uuid4, null=True)
+    invoice = models.ForeignKey("Invoice", on_delete=models.CASCADE)
     transaction_type = models.CharField(_("transaction_type"), max_length=20, null=True)
-    acq_message = models.TextField(_("acq_error"), null=True)
+    acq_message = models.TextField(_("acq_error"), null=True, db_column="acq_error")
     acq_code = models.IntegerField(_("acq_code"), null=True)
     acq_provider = models.TextField(_("acq_provider"), null=True)
 
