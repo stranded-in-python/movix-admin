@@ -7,13 +7,17 @@ class AccountStatusInline(admin.TabularInline):
     fields = ["status"]
 
 
+class InvoiceInline(admin.TabularInline):
+    model = models.Invoice
+
+
 class RefundInline(admin.TabularInline):
     model = models.Refund
 
 
 @admin.register(models.Account)
 class AccountAdmin(admin.ModelAdmin):
-    inlines = [AccountStatusInline]
+    inlines = [AccountStatusInline, InvoiceInline, RefundInline]
     list_display = ["user_id", "subscription"]
     search_fields = ["user_id", "subscription"]
 
