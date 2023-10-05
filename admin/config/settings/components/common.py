@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "django_jsonform",
     "movies.apps.MoviesConfig",
     "notifications.apps.NotificationsConfig",
+    "billing.apps.BillingConfig",
 ]
 
 
