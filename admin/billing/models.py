@@ -9,7 +9,6 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
-        managed = False
 
 
 class TimestampedModel(BaseModel):
