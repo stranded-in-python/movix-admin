@@ -2,12 +2,21 @@ from billing import models
 from django.contrib import admin
 
 
-class AccountStatusInline(admin.TabularInline):
-    model = models.AccountStatus
-    fields = ["status"]
+class ReadonlyInline(admin.TabularInline):
+    def has_add_permission(self, request, obj):
+        return False
+
+    def has_change_permission(self, request, obj):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def get_model_perms(self, request, obj):
+        return {'view': True}
 
 
-class InvoiceInline(admin.TabularInline):
+class InvoiceInline(ReadonlyInline):
     model = models.Invoice
     readonly_fields = [
         "status",
@@ -20,49 +29,18 @@ class InvoiceInline(admin.TabularInline):
         "transaction_id",
     ]
 
-    def has_add_permission(self, request, obj):
-        return False
 
-    def has_change_permission(self, request, obj):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    def get_model_perms(self, request, obj):
-        return {'view': True}
-
-
-class RefundInline(admin.TabularInline):
+class RefundInline(ReadonlyInline):
     model = models.Refund
 
-    def has_add_permission(self, request, obj):
-        return False
 
-    def has_change_permission(self, request, obj):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    def get_model_perms(self, request, obj):
-        return {'view': True}
-
-
-class TransactionLogInline(admin.TabularInline):
+class TransactionLogInline(ReadonlyInline):
     model = models.AcquiringLog
 
-    def has_add_permission(self, request, obj):
-        return False
 
-    def has_change_permission(self, request, obj):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    def get_model_perms(self, request, obj):
-        return {'view': True}
+class AccountStatusInline(admin.TabularInline):
+    model = models.AccountStatus
+    fields = ["status"]
 
 
 @admin.register(models.Account)
